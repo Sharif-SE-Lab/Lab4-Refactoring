@@ -7,6 +7,9 @@ import semantic.symbol.Symbol;
 import semantic.symbol.SymbolTable;
 import semantic.symbol.SymbolType;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.util.Stack;
 
 /**
@@ -26,6 +29,17 @@ public class CodeGenerator {
 
     public void printMemory() {
         memory.pintCodeBlock();
+    }
+
+    private String readFile(String pathname) throws FileNotFoundException {
+        File file = new File(pathname);
+        Scanner sc = new Scanner(file);
+        sc.useDelimiter("\\Z");
+        return sc.next();
+    }
+
+    public void testMemory() throws FileNotFoundException {
+        memory.testCodeBlock(readFile("src/main/resources/expectedOutput"));
     }
 
     public void semanticFunction(int func, Token next) {

@@ -48,10 +48,25 @@ public class Memory {
         return codeBlock.size();
     }
 
-    public void pintCodeBlock() {
-        System.out.println("Code Block");
+    public String getCodeBlockString() {
+        StringBuilder s = new StringBuilder("Code Block");
         for (int i = 0; i < codeBlock.size(); i++) {
-            System.out.println(i + " : " + codeBlock.get(i).toString());
+            s.append("\r\n");
+            s.append(i).append(" : ").append(codeBlock.get(i).toString());
+        }
+        return s.toString();
+    }
+
+    public void pintCodeBlock() {
+        System.out.println(getCodeBlockString());
+    }
+
+    public void testCodeBlock(String expectedOutput) {
+        String blockString = getCodeBlockString();
+        if (!expectedOutput.equals(blockString)) {
+            System.out.println("Wrong Parse");
+        } else {
+            System.out.println("Successful Parse");
         }
     }
 }

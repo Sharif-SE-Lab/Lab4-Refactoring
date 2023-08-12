@@ -10,7 +10,7 @@ public class Main {
         try {
             // start parsing
             parser.startParse(new Scanner(new File("src/main/resources/code")));
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

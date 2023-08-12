@@ -38,7 +38,7 @@ public class Parser {
         cg = new CodeGenerator();
     }
 
-    public void startParse(java.util.Scanner sc) {
+    public void startParse(java.util.Scanner sc) throws Exception {
         lexicalAnalyzer = new lexicalAnalyzer(sc);
         Token lookAhead = lexicalAnalyzer.getNextToken();
         boolean finish = false;
@@ -98,6 +98,9 @@ public class Parser {
 //                    parsStack.pop();
             }
         }
-        if (!ErrorHandler.hasError) cg.printMemory();
+        if (!ErrorHandler.hasError) {
+//            cg.printMemory();
+            cg.testMemory();
+        }
     }
 }
