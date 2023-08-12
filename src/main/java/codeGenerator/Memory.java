@@ -20,16 +20,20 @@ public class Memory {
         lastDataAddress = stratDataMemoryAddress;
     }
 
-    public void addTemp() {
+    public int addTemp() {
         lastTempIndex += tempSize;
+        return getTemp();
     }
 
     public int getTemp() {
         return lastTempIndex - tempSize;
     }
 
-    public int getDateAddress() {
+    public int addData() {
         lastDataAddress += dataSize;
+        return getDataAddress();
+    }
+    public int getDataAddress() {
         return lastDataAddress - dataSize;
     }
 
@@ -75,10 +79,10 @@ public class Memory {
 }
 
 class _3AddressCode {
-    public Operation operation;
-    public Address Operand1;
-    public Address Operand2;
-    public Address Operand3;
+    private Operation operation;
+    private Address Operand1;
+    private Address Operand2;
+    private Address Operand3;
 
     public _3AddressCode() {
 
