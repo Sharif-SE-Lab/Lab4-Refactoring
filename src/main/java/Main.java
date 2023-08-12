@@ -5,13 +5,7 @@ import java.util.Scanner;
 import parser.Parser;
 
 public class Main {
-    public static void main(String[] args) {
-        Parser parser = new Parser();
-        try {
-            // start parsing
-            parser.startParse(new Scanner(new File("src/main/resources/code")));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) throws FileNotFoundException {
+        new CompilerFacade(new Scanner(new File("src/main/resources/code"))).compile();
     }
 }

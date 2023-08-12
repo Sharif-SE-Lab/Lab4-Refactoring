@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Stack;
 
 import Log.Log;
-import codeGenerator.CodeGenerator;
-import errorHandler.ErrorHandler;
+import javafx.util.Pair;
 import scanner.lexicalAnalyzer;
 import scanner.token.Token;
 
@@ -17,7 +17,6 @@ public class Parser {
     Stack<Integer> parsStack;
     ParseTable parseTable;
     lexicalAnalyzer lexicalAnalyzer;
-    CodeGenerator cg;
 
     public Parser() {
         parsStack = new Stack<Integer>();
@@ -35,15 +34,17 @@ public class Parser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        cg = new CodeGenerator();
+//        cg = new CodeGenerator();
     }
 
     Token lookAhead;
     boolean finish;
-    public void startParse(java.util.Scanner sc) throws Exception {
+    LinkedList<Pair<Integer, Token>> abstractSyntaxTree;
+    public LinkedList<Pair<Integer, Token>> generateAbstractSyntaxTree(java.util.Scanner sc) throws Exception {
         lexicalAnalyzer = new lexicalAnalyzer(sc);
         lookAhead = lexicalAnalyzer.getNextToken();
         finish = false;
+        abstractSyntaxTree = new LinkedList<>();
         Action currentAction;
         while (!finish) {
             try {
@@ -73,9 +74,10 @@ public class Parser {
 //                    parsStack.pop();
             }
         }
-        if (!ErrorHandler.hasError) {
-//            cg.printMemory();
-            cg.testMemory();
-        }
+        return abstractSyntaxTree;
+//        if (!ErrorHandler.hasError) {
+////            cg.printMemory();
+//            cg.testMemory();
+//        }
     }
 }

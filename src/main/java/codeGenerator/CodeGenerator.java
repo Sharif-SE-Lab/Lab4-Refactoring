@@ -2,6 +2,7 @@ package codeGenerator;
 
 import Log.Log;
 import errorHandler.ErrorHandler;
+import javafx.util.Pair;
 import scanner.token.Token;
 import semantic.symbol.Symbol;
 import semantic.symbol.SymbolTable;
@@ -9,6 +10,7 @@ import semantic.symbol.SymbolType;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -22,9 +24,11 @@ public class CodeGenerator {
     private Stack<String> callStack = new Stack<>();
     private SymbolTable symbolTable;
 
-    public CodeGenerator() {
+    LinkedList<Pair<Integer, Token>> abstractSyntaxTree;
+
+    public CodeGenerator(LinkedList<Pair<Integer, Token>> abstractSyntaxTree) {
         symbolTable = new SymbolTable(memory);
-        //TODO
+        this.abstractSyntaxTree = abstractSyntaxTree;
     }
 
     public void printMemory() {
@@ -506,5 +510,12 @@ public class CodeGenerator {
 
     public void main() {
 
+    }
+
+    public void generateCode() throws FileNotFoundException {
+        for (Pair<Integer, Token> generationPair : this.abstractSyntaxTree) {
+            semanticFunction(generationPair.getKey(), generationPair.getValue());
+        }
+        this.testMemory();
     }
 }

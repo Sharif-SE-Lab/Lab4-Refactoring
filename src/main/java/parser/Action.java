@@ -1,6 +1,7 @@
 package parser;
 
 import Log.Log;
+import javafx.util.Pair;
 
 import java.util.Stack;
 
@@ -54,7 +55,8 @@ class ReduceAction implements Action {
         Log.print(/*"new State : " + */parsStack.peek() + "");
 //                        Log.print("");
         try {
-            parser.cg.semanticFunction(rule.semanticAction, parser.lookAhead);
+            parser.abstractSyntaxTree.add(new Pair<>(rule.semanticAction, parser.lookAhead));
+//            parser.cg.semanticFunction(rule.semanticAction, parser.lookAhead);
         } catch (Exception e) {
             Log.print("Code Genetator Error");
         }
