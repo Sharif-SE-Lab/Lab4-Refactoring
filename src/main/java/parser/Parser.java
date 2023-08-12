@@ -13,11 +13,11 @@ import scanner.lexicalAnalyzer;
 import scanner.token.Token;
 
 public class Parser {
-    private ArrayList<Rule> rules;
-    private Stack<Integer> parsStack;
-    private ParseTable parseTable;
-    private lexicalAnalyzer lexicalAnalyzer;
-    private CodeGenerator cg;
+    ArrayList<Rule> rules;
+    Stack<Integer> parsStack;
+    ParseTable parseTable;
+    lexicalAnalyzer lexicalAnalyzer;
+    CodeGenerator cg;
 
     public Parser() {
         parsStack = new Stack<Integer>();
@@ -38,10 +38,12 @@ public class Parser {
         cg = new CodeGenerator();
     }
 
+    Token lookAhead;
+    boolean finish;
     public void startParse(java.util.Scanner sc) throws Exception {
         lexicalAnalyzer = new lexicalAnalyzer(sc);
-        Token lookAhead = lexicalAnalyzer.getNextToken();
-        boolean finish = false;
+        lookAhead = lexicalAnalyzer.getNextToken();
+        finish = false;
         Action currentAction;
         while (!finish) {
             try {
@@ -50,34 +52,7 @@ public class Parser {
                 currentAction = parseTable.getActionTable(parsStack.peek(), lookAhead);
                 Log.print(currentAction.toString());
                 //Log.print("");
-
-                switch (currentAction.action) {
-                    case shift:
-                        parsStack.push(currentAction.number);
-                        lookAhead = lexicalAnalyzer.getNextToken();
-
-                        break;
-                    case reduce:
-                        Rule rule = rules.get(currentAction.number);
-                        for (int i = 0; i < rule.RHS.size(); i++) {
-                            parsStack.pop();
-                        }
-
-                        Log.print(/*"state : " +*/ parsStack.peek() + "\t" + rule.LHS);
-//                        Log.print("LHS : "+rule.LHS);
-                        parsStack.push(parseTable.getGotoTable(parsStack.peek(), rule.LHS));
-                        Log.print(/*"new State : " + */parsStack.peek() + "");
-//                        Log.print("");
-                        try {
-                            cg.semanticFunction(rule.semanticAction, lookAhead);
-                        } catch (Exception e) {
-                            Log.print("Code Genetator Error");
-                        }
-                        break;
-                    case accept:
-                        finish = true;
-                        break;
-                }
+                currentAction.act(this);
                 Log.print("");
             } catch (Exception ignored) {
                 ignored.printStackTrace();

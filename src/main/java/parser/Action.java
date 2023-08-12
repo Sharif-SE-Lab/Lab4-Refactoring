@@ -1,29 +1,74 @@
 package parser;
 
-public class Action {
-    public act action;
-    //if action = shift : number is state
-    //if action = reduce : number is number of rule
-    public int number;
+import Log.Log;
 
-    public Action(act action, int number) {
-        this.action = action;
-        this.number = number;
+import java.util.Stack;
+
+public interface Action {
+    String toString();
+
+    void act(Parser parser);
+}
+
+class ShiftAction implements Action {
+    private final int stateNumber;
+    public ShiftAction(int stateNumber) {
+        this.stateNumber = stateNumber;
     }
 
+    @Override
     public String toString() {
-        switch (action) {
-            case accept:
-                return "acc";
-            case shift:
-                return "s" + number;
-            case reduce:
-                return "r" + number;
-        }
-        return action.toString() + number;
+        return "s" + stateNumber;
+    }
+
+    @Override
+    public void act(Parser parser) {
+        parser.parsStack.push(stateNumber);
+        parser.lookAhead = parser.lexicalAnalyzer.getNextToken();
     }
 }
 
-enum act {
-    shift, reduce, accept
+class ReduceAction implements Action {
+    private final int ruleNumber;
+
+    public ReduceAction(int ruleNumber) {
+        this.ruleNumber = ruleNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "r" + ruleNumber;
+    }
+
+    @Override
+    public void act(Parser parser) {
+        Rule rule = parser.rules.get(ruleNumber);
+        Stack<Integer> parsStack = parser.parsStack;
+        for (int i = 0; i < rule.RHS.size(); i++) {
+            parsStack.pop();
+        }
+
+        Log.print(/*"state : " +*/ parsStack.peek() + "\t" + rule.LHS);
+//                        Log.print("LHS : "+rule.LHS);
+        parsStack.push(parser.parseTable.getGotoTable(parsStack.peek(), rule.LHS));
+        Log.print(/*"new State : " + */parsStack.peek() + "");
+//                        Log.print("");
+        try {
+            parser.cg.semanticFunction(rule.semanticAction, parser.lookAhead);
+        } catch (Exception e) {
+            Log.print("Code Genetator Error");
+        }
+    }
+}
+
+class AcceptAction implements Action {
+    @Override
+    public String toString() {
+        return "acc";
+    }
+
+    @Override
+    public void act(Parser parser) {
+        parser.finish = true;
+    }
 }
