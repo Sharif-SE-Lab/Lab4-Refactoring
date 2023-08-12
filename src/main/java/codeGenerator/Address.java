@@ -5,9 +5,17 @@ package codeGenerator;
  */
 
 public class Address {
-    public int num;
-    public TypeAddress Type;
-    public varType varType;
+    private final int num;
+    public int getNum() {
+        return num;
+    }
+
+    private final TypeAddress Type;
+
+    private final varType varType;
+    public varType getVarType() {
+        return varType;
+    }
 
     public Address(int num, varType varType, TypeAddress Type) {
         this.num = num;
@@ -24,12 +32,12 @@ public class Address {
     public String toString() {
         switch (Type) {
             case Direct:
-                return num + "";
+                return getNum() + "";
             case Indirect:
-                return "@" + num;
+                return "@" + getNum();
             case Imidiate:
-                return "#" + num;
+                return "#" + getNum();
         }
-        return num + "";
+        return getNum() + "";
     }
 }
