@@ -48,18 +48,8 @@ class ReduceAction implements Action {
         for (int i = 0; i < rule.RHS.size(); i++) {
             parsStack.pop();
         }
-
-        Log.print(/*"state : " +*/ parsStack.peek() + "\t" + rule.LHS);
-//                        Log.print("LHS : "+rule.LHS);
         parsStack.push(parser.parseTable.getGotoTable(parsStack.peek(), rule.LHS));
-        Log.print(/*"new State : " + */parsStack.peek() + "");
-//                        Log.print("");
-        try {
-            parser.abstractSyntaxTree.add(new Pair<>(rule.semanticAction, parser.lookAhead));
-//            parser.cg.semanticFunction(rule.semanticAction, parser.lookAhead);
-        } catch (Exception e) {
-            Log.print("Code Genetator Error");
-        }
+        parser.abstractSyntaxTree.add(new Pair<>(rule.semanticAction, parser.lookAhead));
     }
 }
 

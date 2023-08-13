@@ -1,5 +1,6 @@
 import Utils.IOUtils;
 import codeGenerator.CodeGenerator;
+import errorHandler.ErrorHandler;
 import javafx.util.Pair;
 import parser.Parser;
 import scanner.lexicalAnalyzer;
@@ -22,7 +23,11 @@ public class CompilerFacade {
             LinkedList<Token> tokens = new lexicalAnalyzer(code).getTokens();
             LinkedList<Pair<Integer, Token>> abstractSyntaxTree = parser.generateAbstractSyntaxTree(tokens);
             String compiledCode = new CodeGenerator(abstractSyntaxTree).generateCode();
-            test(compiledCode, IOUtils.getInstance().readFile("src/main/resources/expectedOutput"));
+            if (ErrorHandler.hasError) {
+                throw new Exception();
+            } else {
+                test(compiledCode, IOUtils.getInstance().readFile("src/main/resources/expectedOutput"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

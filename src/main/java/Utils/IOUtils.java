@@ -13,6 +13,10 @@ public class IOUtils {
         return instance;
     }
 
+    private IOUtils() {
+
+    }
+
     public String readWholeInput(Scanner scanner) {
         scanner.useDelimiter("\\Z");
         return scanner.next();

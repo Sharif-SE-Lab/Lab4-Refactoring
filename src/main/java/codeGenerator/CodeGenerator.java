@@ -35,7 +35,6 @@ public class CodeGenerator {
     }
 
     public void semanticFunction(int func, Token next) {
-        Log.print("codegenerator : " + func);
         switch (func) {
             case 0:
                 return;
