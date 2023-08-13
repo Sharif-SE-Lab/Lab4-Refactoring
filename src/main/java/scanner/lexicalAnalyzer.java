@@ -10,18 +10,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class lexicalAnalyzer {
-    private Matcher matcher;
+    private final Matcher matcher;
 
-    public lexicalAnalyzer(java.util.Scanner sc) {
-        StringBuilder input = new StringBuilder();
-        while (sc.hasNext()) {
-            input.append(sc.nextLine());
-        }
+    public lexicalAnalyzer(String code) {
         StringBuilder tokenPattern = new StringBuilder();
         for (Type tokenType : Type.values())
             tokenPattern.append(String.format("|(?<%s>%s)", tokenType.name(), tokenType.pattern));
         Pattern expression = Pattern.compile(tokenPattern.substring(1));
-        matcher = expression.matcher(input.toString());
+        matcher = expression.matcher(code);
     }
 
     public Token getNextToken() {

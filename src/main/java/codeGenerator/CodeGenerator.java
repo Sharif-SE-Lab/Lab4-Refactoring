@@ -7,11 +7,7 @@ import scanner.token.Token;
 import semantic.symbol.Symbol;
 import semantic.symbol.SymbolTable;
 import semantic.symbol.SymbolType;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.Stack;
 
 /**
@@ -31,19 +27,11 @@ public class CodeGenerator {
         this.abstractSyntaxTree = abstractSyntaxTree;
     }
 
-    public void printMemory() {
-        memory.pintCodeBlock();
-    }
-
-    private String readFile(String pathname) throws FileNotFoundException {
-        File file = new File(pathname);
-        Scanner sc = new Scanner(file);
-        sc.useDelimiter("\\Z");
-        return sc.next();
-    }
-
-    public void testMemory() throws FileNotFoundException {
-        memory.testCodeBlock(readFile("src/main/resources/expectedOutput"));
+    public String generateCode() {
+        for (Pair<Integer, Token> generationPair : this.abstractSyntaxTree) {
+            semanticFunction(generationPair.getKey(), generationPair.getValue());
+        }
+        return this.memory.getCodeBlockString();
     }
 
     public void semanticFunction(int func, Token next) {
@@ -510,12 +498,5 @@ public class CodeGenerator {
 
     public void main() {
 
-    }
-
-    public void generateCode() throws FileNotFoundException {
-        for (Pair<Integer, Token> generationPair : this.abstractSyntaxTree) {
-            semanticFunction(generationPair.getKey(), generationPair.getValue());
-        }
-        this.testMemory();
     }
 }

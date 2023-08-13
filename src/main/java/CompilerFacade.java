@@ -1,13 +1,12 @@
+import Utils.IOUtils;
 import codeGenerator.CodeGenerator;
 import javafx.util.Pair;
 import parser.Parser;
 import scanner.lexicalAnalyzer;
 import scanner.token.Token;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.Stack;
 
 public class CompilerFacade {
     private final Scanner scanner;
@@ -19,11 +18,21 @@ public class CompilerFacade {
     public void compile() {
         Parser parser = new Parser();
         try {
-            LinkedList<Token> tokens = new lexicalAnalyzer(this.scanner).getTokens();
+            String code = IOUtils.getInstance().readWholeInput(scanner);
+            LinkedList<Token> tokens = new lexicalAnalyzer(code).getTokens();
             LinkedList<Pair<Integer, Token>> abstractSyntaxTree = parser.generateAbstractSyntaxTree(tokens);
-            new CodeGenerator(abstractSyntaxTree).generateCode();
+            String compiledCode = new CodeGenerator(abstractSyntaxTree).generateCode();
+            test(compiledCode, IOUtils.getInstance().readFile("src/main/resources/expectedOutput"));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void test(String calculatedOutput, String expectedOutput) {
+        if (!calculatedOutput.equals(expectedOutput)) {
+            System.out.println("Wrong Parse");
+        } else {
+            System.out.println("Successful Parse");
         }
     }
 }

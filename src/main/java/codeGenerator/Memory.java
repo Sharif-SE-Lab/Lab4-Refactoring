@@ -64,18 +64,6 @@ public class Memory {
         return s.toString();
     }
 
-    public void pintCodeBlock() {
-        System.out.println(getCodeBlockString());
-    }
-
-    public void testCodeBlock(String expectedOutput) {
-        String blockString = getCodeBlockString();
-        if (!expectedOutput.equals(blockString)) {
-            System.out.println("Wrong Parse");
-        } else {
-            System.out.println("Successful Parse");
-        }
-    }
 }
 
 class _3AddressCode {
