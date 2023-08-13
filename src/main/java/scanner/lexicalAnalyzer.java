@@ -4,6 +4,8 @@ import errorHandler.ErrorHandler;
 import scanner.token.Token;
 import scanner.type.Type;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,5 +44,13 @@ public class lexicalAnalyzer {
             }
         }
         return new Token(Type.EOF, "$");
+    }
+
+    public LinkedList<Token> getTokens() {
+        LinkedList<Token> tokens = new LinkedList<>();
+        while (tokens.isEmpty() || tokens.get(tokens.size()-1).type != Type.EOF) {
+            tokens.add(getNextToken());
+        }
+        return tokens;
     }
 }

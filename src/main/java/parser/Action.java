@@ -25,7 +25,7 @@ class ShiftAction implements Action {
     @Override
     public void act(Parser parser) {
         parser.parsStack.push(stateNumber);
-        parser.lookAhead = parser.lexicalAnalyzer.getNextToken();
+        parser.lookAhead = parser.tokens.pop();
     }
 }
 

@@ -16,7 +16,6 @@ public class Parser {
     ArrayList<Rule> rules;
     Stack<Integer> parsStack;
     ParseTable parseTable;
-    lexicalAnalyzer lexicalAnalyzer;
 
     public Parser() {
         parsStack = new Stack<Integer>();
@@ -37,12 +36,14 @@ public class Parser {
 //        cg = new CodeGenerator();
     }
 
+//    lexicalAnalyzer lexicalAnalyzer;
+    LinkedList<Token> tokens;
     Token lookAhead;
     boolean finish;
     LinkedList<Pair<Integer, Token>> abstractSyntaxTree;
-    public LinkedList<Pair<Integer, Token>> generateAbstractSyntaxTree(java.util.Scanner sc) throws Exception {
-        lexicalAnalyzer = new lexicalAnalyzer(sc);
-        lookAhead = lexicalAnalyzer.getNextToken();
+    public LinkedList<Pair<Integer, Token>> generateAbstractSyntaxTree(LinkedList<Token> tokens) throws Exception {
+        this.tokens = tokens;
+        lookAhead = tokens.pop();
         finish = false;
         abstractSyntaxTree = new LinkedList<>();
         Action currentAction;

@@ -1,8 +1,10 @@
 import codeGenerator.CodeGenerator;
 import javafx.util.Pair;
 import parser.Parser;
+import scanner.lexicalAnalyzer;
 import scanner.token.Token;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
@@ -17,8 +19,8 @@ public class CompilerFacade {
     public void compile() {
         Parser parser = new Parser();
         try {
-            // start parsing
-            LinkedList<Pair<Integer, Token>> abstractSyntaxTree = parser.generateAbstractSyntaxTree(this.scanner);
+            LinkedList<Token> tokens = new lexicalAnalyzer(this.scanner).getTokens();
+            LinkedList<Pair<Integer, Token>> abstractSyntaxTree = parser.generateAbstractSyntaxTree(tokens);
             new CodeGenerator(abstractSyntaxTree).generateCode();
         } catch (Exception e) {
             e.printStackTrace();
